@@ -1,0 +1,32 @@
+# main.py 会读取这个文件
+run_name: "M2-MOEP_full_model"
+
+# 数据相关配置
+data:
+  data_dir: "../aaai26/dataset/prediction/" # 注意：这个路径是相对于项目根目录的相对路径
+  seq_len: 20
+  pred_len: 1
+
+# 模型架构配置
+model:
+  num_experts: 12
+  embedding_dim: 64
+  temperature: 1.0 # 路由Softmax的温度系数
+  expert_type: "FFTmsMamba" # 用于消融实验, 可改为 "FFT-LSTM"
+  gating_type: "MetricLearning" # 用于消融实验, 可改为 "DTW"
+  
+  expert_params:
+    mamba_d_model: 128
+    mamba_scales: [2, 4, 8] # ms-Mamba的核心
+  
+  gating_params:
+    latent_seq_dim: 60 # flow_model输出的维度
+
+# 训练配置
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.0001
+  optimizer: "Adam"
+  # Triplet Loss 的 margin
+  triplet_margin: 0.5 
