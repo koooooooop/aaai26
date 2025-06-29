@@ -1,5 +1,7 @@
 import yaml
 import argparse
+import torch
+import numpy as np
 
 from data.dataset import TimeSeriesDataModule
 from train import Trainer
@@ -24,11 +26,13 @@ def main():
         print(f"Error loading config file: {e}")
         return
 
-    # TODO: 设置随机种子，保证实验可复现
-    # import torch
-    # import numpy as np
-    # torch.manual_seed(config.get('seed', 42))
-    # np.random.seed(config.get('seed', 42))
+    # 设置随机种子，保证实验可复现
+    seed = config.get('seed', 42)
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    print(f"\nRandom seed set to {seed}")
             
     # 3. 初始化数据模块
     print("\nInitializing data module...")

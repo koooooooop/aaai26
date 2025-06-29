@@ -29,4 +29,8 @@ training:
   learning_rate: 0.0001
   optimizer: "Adam"
   # Triplet Loss 的 margin
-  triplet_margin: 0.5 
+  triplet_margin: 0.5
+
+# 其他配置
+seed: 42
+run_dir: "runs" # 用于保存模型和日志的目录 
